@@ -10,6 +10,7 @@ export default function Dashboard() {
     column: "",
   })
   const [grid, setGrid] = useState([])
+  const [tableData,setTableData]=useState([]);
   const [nextAlphabet, setAlphaBet] = useState("")
 
   useEffect(() => {
@@ -17,6 +18,10 @@ export default function Dashboard() {
       setLoader(false)
     }, [3000])
   }, [])
+
+  useEffect(()=>{
+    setTableData(grid)
+  },[grid])
 
 
   const handleClick = (action) => () => {
@@ -57,14 +62,15 @@ export default function Dashboard() {
 
   function handleSearch(value) {
     if (!value) {
+      setTableData([...grid])
       return
     }
     else {
-      grid.forEach((gridItem, ind) => {
+      tableData.forEach((gridItem, ind) => {
         gridItem.forEach((data, index) => {
           if (data !== value) {
-            grid[ind][index] = '.'
-            setGrid([...grid])
+            tableData[ind][index] = ''
+            setTableData([...tableData])
           }
         })
       })
@@ -149,7 +155,7 @@ export default function Dashboard() {
                     />
                     <table>
                       <tbody>
-                        {grid.map((data, index) => {
+                        {tableData.map((data, index) => {
                           return (
                             <tr key={index}>
                               {
