@@ -10,7 +10,7 @@ export default function Dashboard() {
     column: "",
   })
   const [grid, setGrid] = useState([])
-  const [tableData,setTableData]=useState([]);
+  const [tableData, setTableData] = useState([]);
   const [nextAlphabet, setAlphaBet] = useState("")
 
   useEffect(() => {
@@ -19,17 +19,13 @@ export default function Dashboard() {
     }, [3000])
   }, [])
 
-  useEffect(()=>{
-    setTableData(grid)
-  },[grid])
-
-
   const handleClick = (action) => () => {
     switch (action) {
       case 'generateGrid':
         if (!rowCol.row || !rowCol.column) return alert('add rows or columns');
         let gridArray = Array(parseInt(rowCol.row)).fill(0).map(row => new Array(parseInt(rowCol.column)).fill(''))
         setGrid(gridArray);
+        setTableData(gridArray);
         return setRowcolumns({
           row: "",
           column: ""
@@ -45,7 +41,9 @@ export default function Dashboard() {
             for (var j = 0; j <= grid[i].length && !skip; j++) {
               if (grid[i][j] == '') {
                 grid[i][j] = nextAlphabet;
+                tableData[i][j]=nextAlphabet
                 setGrid([...grid])
+                setTableData([...tableData])
                 skip = true
               }
             }
@@ -68,7 +66,7 @@ export default function Dashboard() {
     else {
       tableData.forEach((gridItem, ind) => {
         gridItem.forEach((data, index) => {
-          if (data !== value) {
+          if (!data.includes(value)) {
             tableData[ind][index] = ''
             setTableData([...tableData])
           }
@@ -151,7 +149,7 @@ export default function Dashboard() {
                       type="text"
                       placeholder="search alphabet"
                       className="p mb br-4 br"
-                      onChange={(e) => handleSearch(e.target.value)}
+                      onChange={(e) => { handleSearch(e.target.value) }}
                     />
                     <table>
                       <tbody>
